@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.lejos.nxt.ldt.LEJOS_LIBRARY_CONTAINER/nxt"/>
+	<classpathentry kind="lib" path="/home/narf/Downloads/NxtJLibA/lib/classes.jar"/>
+	<classpathentry kind="lib" path="/home/narf/Downloads/NxtJLibA/lib/NxtJLibA.jar"/>
+	<classpathentry kind="lib" path="/home/narf/Downloads/JGameGrid/lib/JGameGrid.jar"/>
+	<classpathentry kind="lib" path="/home/narf/Downloads/JGameGrid/robotsim/lib/RobotSim.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/java-8-oracle/lib/javafx-mx.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/java-8-oracle/jre/lib/rt.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
