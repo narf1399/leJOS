@@ -37,8 +37,13 @@ public class FollowTheLine {
 			int lightVal = lightSensor.getLightValue();
 			// Check if we went off track
 			if (lightVal > trigger) {
-				Motor.A.stop();
-				Motor.B.stop();
+//				Motor.A.stop();
+//				Motor.B.stop();
+				
+				// If robot is out of the track it slows down.
+				Motor.A.setSpeed(110);
+				Motor.B.setSpeed(100);
+				Motor.A.setSpeed(100);
 
 				findTrack();
 				//
@@ -81,41 +86,51 @@ public class FollowTheLine {
 
 		Motor.A.stop();
 		Motor.B.stop();
-		
+
 		if (trackFound) {
 			if (direction == RIGHT) {
-				Motor.A.rotate(30, true);
-				Motor.B.rotate(-30);
+				Motor.A.setSpeed(140);
+				Motor.B.setSpeed(120);
+//				Motor.A.rotate(30, true);
+//				Motor.B.rotate(-30);
 			} else {
-				Motor.A.rotate(-30, true);
-				Motor.B.rotate(30);
+				Motor.A.setSpeed(120);
+				Motor.B.setSpeed(140);
+				//				Motor.A.rotate(-30, true);
+//				Motor.B.rotate(30);
 			}
+			Motor.A.setSpeed(150);
+			Motor.B.setSpeed(140);
+			Motor.A.setSpeed(140);
 		}
 
 		return trackFound;
 	}
 
 	public void findTrack() {
-		
-		
+
 		boolean trackFound = turn(lastDirection, TURN_TIME);
-		
+
 		if (trackFound) {
+			Motor.A.setSpeed(150);
+			Motor.B.setSpeed(140);
+			Motor.A.setSpeed(140);
 			Motor.A.forward();
 			Motor.B.forward();
 			return;
 		} else {
-			lastDirection = (lastDirection + 1)%2;
-			trackFound = turn(lastDirection, 2*TURN_TIME);
+			lastDirection = (lastDirection + 1) % 2;
+			trackFound = turn(lastDirection, 2 * TURN_TIME);
 		}
-		
+
 		if (trackFound) {
+			Motor.A.setSpeed(150);
+			Motor.B.setSpeed(140);
+			Motor.A.setSpeed(140);
 			Motor.A.forward();
 			Motor.B.forward();
 			return;
 		}
-
-		
 
 		System.out.println("Not found");
 
@@ -139,6 +154,7 @@ public class FollowTheLine {
 		System.out.println("Trigger lvl = " + trigger);
 		System.out.println("Continue...");
 		Button.waitForAnyPress();
+		Button.waitForAnyPress(2000);
 		LCD.clear();
 	}
 

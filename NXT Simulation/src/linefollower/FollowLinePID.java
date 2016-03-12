@@ -32,9 +32,9 @@ public class FollowLinePID {
 		Motor.A.forward();
 		Motor.B.forward();
 		// PID
-		double kp = 200;
+		double kp = 300;
 		double ki = 0;
-		double kd = 0;
+		double kd = 200;
 		int error = 0;
 		int errorOld = 0;
 		int errorSum = 0;
@@ -42,7 +42,7 @@ public class FollowLinePID {
 		int steps = 0;
 		long tStart = System.currentTimeMillis();
 		// Control loop
-		while (steps < 1000) {
+		while (!Button.ESCAPE.isDown()) {
 			int lightValRight = lightSensorRight.getLightValue();
 			int lightValLeft = lightSensorLeft.getLightValue();
 			
@@ -60,20 +60,35 @@ public class FollowLinePID {
 			System.out.println(error);
 			System.out.println(lightValLeft + " " + lightValRight + " " + correctionTerm);
 			
-			Motor.A.setSpeed( (float) (TARGET_SPEED - correctionTerm));
-			Motor.B.setSpeed( (float) (TARGET_SPEED + correctionTerm));
+			float speedA = (float) (TARGET_SPEED - correctionTerm);
+			float speedB = (float) (TARGET_SPEED + correctionTerm);
+			
+			Motor.A.setSpeed(Math.abs(speedA));
+			if (speedA < 0) {
+				Motor.A.backward();
+			} else {
+				Motor.A.forward();
+			}
+			
+			Motor.B.setSpeed(Math.abs(speedB));
+			if (speedB < 0) {
+				Motor.B.backward();
+			} else {
+				Motor.B.forward();
+			}
+			
+//			
+//			Motor.A.setSpeed( (float) (TARGET_SPEED - correctionTerm));
+//			Motor.B.setSpeed( (float) (TARGET_SPEED + correctionTerm));
 			errorOld = error;
 
-			Motor.A.forward();
-			Motor.B.forward();
+//			Motor.A.forward();
+//			Motor.B.forward();
 			// Wait 100 ms
 			//Delay.msDelay(10);
 			steps++;
 		}
-		long t = System.currentTimeMillis() - tStart;
-		System.out.println("Time for 1000 steps = "+t+" ms");
 		
-		Button.waitForAnyPress();
 	}
 
 
