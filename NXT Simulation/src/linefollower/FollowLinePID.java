@@ -32,15 +32,14 @@ public class FollowLinePID {
 		Motor.A.forward();
 		Motor.B.forward();
 		// PID
-		double kp = 300;
+		double kp = 1.5*TARGET_SPEED;
 		double ki = 0;
-		double kd = 200;
+		double kd = TARGET_SPEED;
 		int error = 0;
 		int errorOld = 0;
 		int errorSum = 0;
 
-		int steps = 0;
-		long tStart = System.currentTimeMillis();
+
 		// Control loop
 		while (!Button.ESCAPE.isDown()) {
 			int lightValRight = lightSensorRight.getLightValue();
@@ -86,7 +85,7 @@ public class FollowLinePID {
 //			Motor.B.forward();
 			// Wait 100 ms
 			//Delay.msDelay(10);
-			steps++;
+			
 		}
 		
 	}
