@@ -48,16 +48,33 @@
  
  \frame{\frametitle{Table of contents}
 \begin{itemize}
-\item A
-\item B  
+\item Line Follower - Problem
+\item Line Follower - P Controller
+\item Line Follower - Sourcecode
 \item C 
 \item D
 \end{itemize} 
 }
 
+\frame{\frametitle{Line Follower - Problem}
+\textbf{Problem}: Follow a black line with the NXT using only light sensors.\\
+\vspace{1em}
+\textbf{Solution}: Use two light sensors at each side of the line. Each sensor should see the bright surface next to the line.\\
+Light sensor values are read every 10ms. If the right sensor is dark we go to the right. If the left sensor is dark we got to the left.\\
+If both sensors are dark we have passed the finish line.
+
+}
+
+\frame{\frametitle{Line Follower - P Controller}
+\textbf{P Controller}: Measure the error from the sensors. Adjust the motor speeds by adding / subtracting a correction value. \\
+Correction value = $K_{p}$ * error, error $\in \{-1,0,1\}$\\
+
+
+}
+
 % A slide with a bit of source code
 \begin{frame}[fragile] %fragile ist sehr wichtig!
-\frametitle{Sourcecode LineFollower}
+\frametitle{LineFollower - Sourcecode}
 \begin{lstlisting}
 public class TestClass {
 	public static void main(String[] args) {
