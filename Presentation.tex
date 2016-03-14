@@ -51,7 +51,7 @@
 \item Line Follower - Problem
 \item Line Follower - P Controller
 \item Line Follower - Sourcecode
-\item C 
+\item Line Follower - Demonstration 
 \item D
 \end{itemize} 
 }
@@ -76,13 +76,149 @@ Correction value = $K_{p}$ * error, error $\in \{-1,0,1\}$\\
 \begin{frame}[fragile] %fragile ist sehr wichtig!
 \frametitle{LineFollower - Sourcecode}
 \begin{lstlisting}
-public class TestClass {
-	public static void main(String[] args) {
-		System.out.println(``Hello World'');
-	}
-}
+public class FollowTheLine {
+
+	public static final int TOP_SPEED = 200;
+
+	// The constant for the proportional controller
+	private int kp;
+	// The correction value (how much we slow down / speed up the motors)
+	private int turn;
+	// The error value (-1, 0, 1)
+	private int error;
+
+	// Calibration values
+	private int darkRight;
+	private int darkLeft;
+
+	private int brightRight;
+	private int brightLeft;
+
+	private int triggerRight;
+	private int triggerLeft;
+
+	private LightSensor lsRight;
+	private LightSensor lsLeft;
+
 \end{lstlisting}
 \end{frame}
+
+\begin{frame}[fragile]
+\frametitle{LineFollower - Sourcecode continued}
+\begin{lstlisting}[firstnumber = 24]
+
+	public FollowTheLine() {
+		// The value of 120 is selected by trial and error
+		kp = 120; 
+
+		// Initialize the light sensors
+		lsRight = new LightSensor(SensorPort.S1);
+		lsLeft = new LightSensor(SensorPort.S2);
+
+		// Calibrate the two light sensors
+		calibrateSensors();
+
+		// Start to follow the course
+		followTheCourse();
+	}
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{LineFollower - Sourcecode continued}
+\begin{lstlisting}[firstnumber = 39]
+
+	/**
+	 * Start following the course
+	 */
+	public void followTheCourse() {
+
+		Motor.A.setSpeed(TOP_SPEED);
+		Motor.B.setSpeed(TOP_SPEED);
+
+		// Smoother acceleration
+		Motor.A.setAcceleration(2000);
+		Motor.B.setAcceleration(2000);
+
+		// Start moving
+		Motor.A.forward();
+		Motor.B.forward();
+
+		int lightValueRight;
+		int lightValueLeft;
+
+		while (!Button.ESCAPE.isDown()) {
+			error = 0;
+
+			// Small delay
+			Delay.msDelay(100); 
+			
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{LineFollower - Sourcecode continued}
+\begin{lstlisting}[firstnumber = 64]
+
+		// Get the current light values of both sensors
+		lightValueRight = lsRight.getLightValue();
+		lightValueLeft = lsLeft.getLightValue();
+
+		// If both sensors see dark, we reached the finish line
+		if (lightValueLeft < triggerLeft && lightValueRight < triggerRight) {
+			Motor.A.stop();
+			Motor.B.stop();
+			return;
+		}
+			
+		if (lightValueRight < triggerRight) {
+			error = -1;
+		}
+
+		if (lightValueLeft < triggerLeft) {
+			error = 1;
+		}
+		
+		\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{LineFollower - Sourcecode continued}
+\begin{lstlisting}[firstnumber = 83]
+
+		// P-Controller
+		turn = kp * error;
+
+		// Adjust the speed
+		Motor.A.setSpeed(TOP_SPEED + turn);
+		Motor.B.setSpeed(TOP_SPEED - turn);
+
+		// Handle the turn direction
+		if (error < 0) {
+			Motor.A.backward();
+			Motor.B.forward();
+		}
+
+		if (error > 0) {
+			Motor.A.forward();
+			Motor.B.backward();
+		}
+
+		if (error == 0) {
+			Motor.A.forward();
+			Motor.B.forward();
+		}
+	}
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{}
+  \centering \Large
+  \emph{\vspace{1em}Live demonstration of the Line Follower}
+\end{frame}
+
 
 % Our final slide
 \begin{frame}{}
